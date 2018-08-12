@@ -24,7 +24,6 @@
  *
  */
 
-#pragma GCC diagnostic ignored "-Wformat-truncation="
 #include <linux/kernel.h>
 #include <linux/crypto.h>
 #include <linux/init.h>
