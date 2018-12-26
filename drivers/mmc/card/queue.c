@@ -16,6 +16,7 @@
 #include <linux/kthread.h>
 #include <linux/scatterlist.h>
 #include <linux/bitops.h>
+#include <linux/iosched_switcher.h>
 
 #include <linux/mmc/card.h>
 #include <linux/mmc/host.h>
@@ -58,6 +59,11 @@ static int mmc_queue_thread(void *d)
 	struct mmc_queue *mq = d;
 	struct request_queue *q = mq->queue;
 	struct mmc_card *card = mq->card;
+
+        struct sched_param scheduler_params = {0};
+        scheduler_params.sched_priority = 1;
+
+        sched_setscheduler(current, SCHED_FIFO, &scheduler_params);
 
 	current->flags |= PF_MEMALLOC;
 
@@ -382,6 +388,8 @@ success:
 		ret = PTR_ERR(mq->thread);
 		goto free_bounce_sg;
 	}
+
+	init_iosched_switcher(mq->queue);
 
 	return 0;
  free_bounce_sg:
