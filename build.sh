@@ -1,14 +1,14 @@
 #!/bin/bash
 #
-# Script to compile RebornKernel for lettuce
+# Script to compile RebornKernel for jalebi
 #
-export ARCH=arm64
-export SUBARCH=arm64
-export CROSS_COMPILE=$(pwd)/gcc8/bin/aarch64-opt-linux-android-
+export ARCH=arm
+export SUBARCH=arm
+export CROSS_COMPILE=$(pwd)/gcc8/bin/arm-eabi-
 
-git clone -b opt-gnu-8.x https://github.com/krasCGQ/aarch64-linux-android gcc8
+git clone https://github.com/dev-harsh1998/GCC_BUILDS -b kek gcc8
 
 rm -rf out
 mkdir -p out
-make O=out reborn_lettuce_defconfig
+make O=out reborn_jalebi_defconfig
 make O=out -j16
